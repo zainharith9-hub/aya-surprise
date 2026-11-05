@@ -1,0 +1,175 @@
+<span>White</span>
+
+  </div>
+
+ </div>
+
+ <p class="small">Your favorite color will make this special.</p>
+
+</section>
+
+<section class="panel hidden" id="stage4">
+
+ <svg id="heartSvg" viewBox="0 0 600 600"></svg>
+
+ <div id="finalText">I love u and only u forever ❤️</div>
+
+ <p class="small" id="signature"></p>
+
+</section>
+
+<script>
+
+const stages=[1,2,3,4];
+
+function showStage(n){
+
+ stages.forEach(i=>{
+
+  document.getElementById("stage"+i).classList.toggle("hidden",i!==n);
+
+ });
+
+}
+
+function nextStage(n){showStage(n+1)}
+
+function hideNo(){
+
+ const no=document.getElementById("no");
+
+ no.style.transition="opacity .5s, transform .5s";
+
+ no.style.opacity="0";
+
+ no.style.transform="scale(.5)";
+
+ setTimeout(()=>no.remove(),500);
+
+ document.getElementById("hint").textContent="I think you know the answer ♡";
+
+}
+
+// Background stars
+
+const starBox=document.getElementById("stars");
+
+for(let i=0;i<65;i++){
+
+ const s=document.createElement("span");
+
+ s.className="star";
+
+ s.textContent="✦";
+
+ s.style.left=Math.random()*100+"%";
+
+ s.style.top=Math.random()*100+"%";
+
+ s.style.fontSize=(7+Math.random()*12)+"px";
+
+ s.style.animationDelay=Math.random()*3+"s";
+
+ starBox.appendChild(s);
+
+}
+
+function startHeart(color,name,glow){
+
+ showStage(4);
+
+ const svg=document.getElementById("heartSvg");
+
+ const NS="http://www.w3.org/2000/svg";
+
+ const phrase="I LOVE YOU";
+
+ const cx=300,cy=285;
+
+ const words=[];
+
+ svg.innerHTML="";
+
+ document.getElementById("finalText").classList.remove("show");
+
+ document.documentElement.style.setProperty("—glow",glow);
+
+ document.getElementById("signature").textContent="MADE WITH LOVE";
+
+ // Several layers make a full heart from words
+
+ for(let scale=10;scale<=16;scale+=1){
+
+  for(let i=0;i<120;i++){
+
+   const a=i*Math.PI*2/120;
+
+   const x=16*Math.pow(Math.sin(a),3);
+
+   const y=13*Math.cos(a)-5*Math.cos(2*a)
+
+          -2*Math.cos(3*a)-Math.cos(4*a);
+
+   const t=document.createElementNS(NS,"text");
+
+   t.setAttribute("x",cx+x*scale);
+
+   t.setAttribute("y",cy-y*scale);
+
+   t.setAttribute("class","heart-word");
+
+   t.setAttribute("fill",color);
+
+   t.style.filter=`drop-shadow(0 0 4px ${glow}) drop-shadow(0 0 9px ${glow})`;
+
+   t.textContent=phrase;
+
+   svg.appendChild(t);
+
+   words.push(t);
+
+  }
+
+ }
+
+ let current=0;
+
+ const batch=9;
+
+ function draw(){
+
+  for(let j=0;j<batch&&current<words.length;j++){
+
+   words[current].style.opacity="1";
+
+   current++;
+
+  }
+
+  if(current<words.length){
+
+   setTimeout(draw,25);
+
+  }else{
+
+   setTimeout(()=>{
+
+    document.getElementById("finalText").classList.add("show");
+
+    document.getElementById("signature").textContent="FOREVER YOURS ♡";
+
+   },800);
+
+  }
+
+ }
+
+ draw();
+
+}
+
+</script>
+
+</body>
+
+</html>
